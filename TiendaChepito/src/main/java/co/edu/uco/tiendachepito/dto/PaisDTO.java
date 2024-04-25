@@ -1,39 +1,42 @@
 package co.edu.uco.tiendachepito.dto;
 
-import co.edu.uco.tiendachepito.crosscutting.helpers.textHelper;
+import co.edu.uco.tiendachepito.crosscutting.helpers.TextHelper;
 
 public final class PaisDTO {
+
 	private int id;
-	private String  nombre;
+	private String nombre;
 	
 	public PaisDTO() {
-		setNombre(textHelper.EMPTY);
+		setNombre(TextHelper.EMPTY);
 	}
 	
-	
-	public PaisDTO( final int id,  final String nombre) {
-		super();
+	public PaisDTO(final int id, final String nombre) {
 		setId(id);
 		setNombre(nombre);
 	}
 	
-	public  final int getId() {
+	
+	public static final PaisDTO build() {
+		return new PaisDTO();
+	}
+	
+	public final int getId(final int id) {
 		return id;
 	}
-	public  final void setId(int id) {
+	public final PaisDTO setId(final int id) {
 		this.id = id;
+		return this;
 	}
-	public final  String getNombre() {
+	public final String getNombre() {
 		return nombre;
 	}
-	public final  void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public static final PaisDTO build() {
-		return PaisDTO();
+	public final PaisDTO setNombre(final String nombre) {
+		this.nombre = TextHelper.applyTrim(nombre);
+		return this;
 	}
 	
 
-}
+	
 
+}

@@ -1,29 +1,50 @@
 package co.edu.uco.tiendachepito.dto;
 
-public  final class CiudadDTO {
-	private int id;
-	private String  nombre;
-	private DepartamentoDTO departamento;
+import co.edu.uco.tiendachepito.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.tiendachepito.crosscutting.helpers.TextHelper;
+
+public final class CiudadDTO {
 	
+	private int id;
+	private String nombre;
+	private DepartamentoDTO departamento;
+
+	public CiudadDTO() {
+		setNombre(TextHelper.EMPTY);
+		setDepartamento(DepartamentoDTO.build());
+	}
+	public CiudadDTO(final DepartamentoDTO departamento,final  int id, final String nombre) {
+		setId(id);
+		setNombre(nombre);
+		setDepartamento(departamento);
+	}
+public static final  CiudadDTO build() {
+	return new  CiudadDTO();
+}
 	public int getId() {
 		return id;
 	}
-	public  final void setId(int id) {
+	public final CiudadDTO setId( final int id) {
 		this.id = id;
 		return this;
 	}
-	public final  String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
-	public  final void setNombre(final String nombre) {
-		this.nombre = nombre;
+	public  final CiudadDTO setNombre(final String nombre) {
+		this.nombre = TextHelper.applyTrim(nombre);
+		return this;
 	}
-	public  final DepartamentoDTO getDepartamento() {
+	public DepartamentoDTO getDepartamento() {
 		return departamento;
 	}
-	public final void setDepartamento(final DepartamentoDTO departamento) {
-		this.departamento = departamento;
+	public final CiudadDTO  setDepartamento( final DepartamentoDTO departamento) {
+		this.departamento= ObjectHelper.getObjectHelper().getDefault(departamento,DepartamentoDTO.build());
+		return this;
 	}
-	
+
+	public static void main(String[] args) {
+		System.out.println(CiudadDTO.build().getDepartamento().getPais().getNombre());
+	}
 
 }

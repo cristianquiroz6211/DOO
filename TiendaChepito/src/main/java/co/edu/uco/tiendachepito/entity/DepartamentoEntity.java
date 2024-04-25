@@ -13,7 +13,7 @@ public final  class DepartamentoEntity {
     public DepartamentoEntity(int id, String nombre, paisEntity pais) {
         setId(id);
         setNombre(TextHelper.Empty);
-        setPais(PaisEntity.build(0));
+        setPais(PaisEntity.build());
     }
 
     public int getId() {
