@@ -1,18 +1,20 @@
-package co.edu.uco.tiendachepito.data.dao.sql.sqlazuresql;
+package co.edu.uco.tiendachepito.data.dao.sql.azuresql;
 
 import co.edu.uco.tiendachepito.data.dao.PaisDAO;
+import co.edu.uco.tiendachepito.data.dao.sql.SqlConnection;
 import co.edu.uco.tiendachepito.entity.PaisEntity;
 
 import java.sql.Connection;
+import java.util.List;
 
-public final class   PaisaZureSql extends SqlConnection  implements PaisDAO {
-    public PaisaZureSql( final Connection connection) {
+public final class PaisAzureSqlDAO extends SqlConnection implements PaisDAO {
+    public PaisAzureSqlDAO(final Connection connection) {
         super(connection);
     }
 
 
     @Override
-    public void actualizar(PaisEntity entidad) {
+    public void actualizar(final PaisEntity entidad) {
         //cambiar nombre de pais con codigo 1 a 'Venezuela'
         final var sentencia = new StringBuilder();
         sentencia.append("UPDATE PAIS SET Nombre = 'Venezuela' WHERE ID = 1");
@@ -20,9 +22,9 @@ public final class   PaisaZureSql extends SqlConnection  implements PaisDAO {
     }
 
     @Override
-    public List<E> consultar(PaisEntity entidad) {
+    public List<PaisEntity> consultar(final PaisEntity entidad) {
         //Consultar pais con codigo 1
-        fianl var sentencia = new StringBuilder();
+        final var sentencia = new StringBuilder();
         sentencia.append("SELECT id, nombre FROM PAIS");
         sentencia.append("ORDER BY id ASC");
         return null;
@@ -31,7 +33,7 @@ public final class   PaisaZureSql extends SqlConnection  implements PaisDAO {
     }
 
     @Override
-    public void crear(PaisEntity entidad) {
+    public void crear(final PaisEntity entidad) {
         final var sentencia = new StringBuilder();
         sentencia.append("INSERT INTO PAIS (Nombre)");
         sentencia.append("VALUES ('Colombia')");
@@ -39,7 +41,7 @@ public final class   PaisaZureSql extends SqlConnection  implements PaisDAO {
     }
 
     @Override
-    public void eliminar(int id) {
+    public void eliminar(final int id) {
         //Eliminar pais con codigo 1
         final var sentencia = new StringBuilder();
         sentencia.append("DELETE FROM PAIS WHERE ID = 1");
