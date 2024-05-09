@@ -60,12 +60,6 @@ public final class MessageCatalogBase implements MessageCatalog {
 				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
 		mensajes.put(CodigoMensaje.M000022.getIdentificador(), new Mensaje(CodigoMensaje.M000022,
 				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
-		mensajes.put(CodigoMensaje.M000023.getIdentificador(), new Mensaje(CodigoMensaje.M000023,
-				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
-		mensajes.put(CodigoMensaje.M000024.getIdentificador(), new Mensaje(CodigoMensaje.M000024,
-				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
-		mensajes.put(CodigoMensaje.M000025.getIdentificador(), new Mensaje(CodigoMensaje.M000025,
-				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
 		mensajes.put(CodigoMensaje.M000026.getIdentificador(), new Mensaje(CodigoMensaje.M000026,
 				"se ha presetnado un problema inesperaddo tratando de confirmar una transaccion sql con la fuente de informacion deseada  "));
 

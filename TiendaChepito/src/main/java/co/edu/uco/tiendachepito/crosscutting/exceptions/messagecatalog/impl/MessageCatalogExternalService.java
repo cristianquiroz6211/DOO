@@ -17,9 +17,10 @@ public final class MessageCatalogExternalService implements MessageCatalog {
 	@Override
 	public final void inicializar() {
 		mensajes.clear();
-		//mensajes.put(CodigoMensaje.M00007.getIdentificador(),
-		//		new Mensaje(CodigoMensaje.M00007, "La transacción se ha completado de forma satisfactoria..."));
-	}
+		mensajes.put(CodigoMensaje.M000023.getIdentificador(),
+			new Mensaje(CodigoMensaje.M000023, "Se ha presentado un problema tratando de realizar un insert de la informacion del pais \"${1}\" en la tabla PAIS de la base de datos SQL"));
+		mensajes.put(CodigoMensaje.M000024.getIdentificador(),
+			new Mensaje(CodigoMensaje.M000024, "Se ha presentado un problema tratando de realizar un update de la informacion del pais \"${1}\" en la tabla PAIS de la base de datos SQL"));}
 
 	@Override
 	public final String obtenerContenidoMensaje(final CodigoMensaje codigo, final String... parametros) {

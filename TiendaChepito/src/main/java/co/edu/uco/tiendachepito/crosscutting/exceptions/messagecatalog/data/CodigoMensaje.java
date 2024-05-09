@@ -27,8 +27,8 @@ public enum CodigoMensaje {
 	M000020(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00020", true),
 	M000021(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00021", true),
 	M000022(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00022", true),
-	M000023(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00023", true),
-	M000024(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00024", true),
+	M000023(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00023", false),//No esta en base
+	M000024(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00024", false),
 	M000025(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00025", true),
 	M000026(TipoMensaje.TECNICO, CategoriaMensaje.ERROR, "00026", true),
 
