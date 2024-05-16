@@ -1,68 +1,114 @@
-package co.edu.uco.tiendachepito.data.dao.sql.azuresql;
+package co.edu.uco.tiendachepito.data.DAO.sql.azuresql;
 
-import co.edu.uco.tiendachepito.crosscutting.exceptions.custom.DataTiendaChepitoException;
-import co.edu.uco.tiendachepito.crosscutting.exceptions.messagecatalog.MessageCatalogStrategy;
-import co.edu.uco.tiendachepito.crosscutting.exceptions.messagecatalog.data.CodigoMensaje;
-import co.edu.uco.tiendachepito.data.dao.PaisDAO;
-import co.edu.uco.tiendachepito.data.dao.sql.SqlConnection;
-import co.edu.uco.tiendachepito.entity.PaisEntity;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.exception.custom.DataTiendaChepitoException;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.exception.messagecatalog.MessageCatalogStrategy;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.exception.messagecatalog.data.CodigoMensaje;
+import co.edu.uco.tiendachepito.data.DAO.PaisDAO;
+import co.edu.uco.tiendachepito.data.DAO.sql.SqlConnection;
+import co.edu.uco.tiendachepito.entity.paisEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class PaisAzureSqlDAO extends SqlConnection implements PaisDAO {
+
     public PaisAzureSqlDAO(final Connection connection) {
         super(connection);
     }
 
-
     @Override
-    public void actualizar(final PaisEntity entidad) {
-        //cambiar nombre de pais con codigo 1 a 'Venezuela'
-        final var sentencia = new StringBuilder();
-        sentencia.append("UPDATE PAIS SET Nombre = 'Venezuela' WHERE ID = 1");
+    public final void actualizar(final paisEntity entidad) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("UPDATE Pais ");
+        sentenciaSql.append("SET Nombre = ? ");
+        sentenciaSql.append("WHERE Id = ?");
 
+        try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+            sentenciaPreparada.setString(1, entidad.getNombre());
+            sentenciaPreparada.setInt(2, entidad.getId());
+            sentenciaPreparada.executeUpdate();
+        } catch (final SQLException exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la actualización de la información del país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000023, entidad.getNombre());
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        } catch (final Exception exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la actualización de la información del país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000024, entidad.getNombre());
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        }
     }
 
     @Override
-    public List<PaisEntity> consultar(final PaisEntity entidad) {
-        //Consultar pais con codigo 1
-        final var sentencia = new StringBuilder();
-        sentencia.append("SELECT id, nombre FROM PAIS");
-        sentencia.append("ORDER BY id ASC");
-        return null;
+    public final List<paisEntity> consultar(final paisEntity entidad) {
+        final var listaPaises = new ArrayList<paisEntity>();
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("SELECT Id, Nombre ");
+        sentenciaSql.append("FROM Pais ");
+        sentenciaSql.append("ORDER BY Nombre ASC");
 
-
+        try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+            try (final ResultSet resultado = sentenciaPreparada.executeQuery()) {
+                List<paisEntity> paises = new ArrayList<>();
+                while (resultado.next()) {
+                    paisEntity paisTmp = paisEntity.build(resultado.getInt("Id"), resultado.getString("Nombre"));
+                    listaPaises.add(paisTmp);
+                }
+            }
+        } catch (final SQLException exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la consulta de los países. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000023);
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        } catch (final DataTiendaChepitoException exception){
+            throw exception;
+        } catch (final Exception exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la consulta de los países. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000024);
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        }
+        return listaPaises;
     }
 
     @Override
-    public void crear(final PaisEntity entidad) {
-        final var sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("INSERT INTO PAIS (Nombre) ");
-        sentenciaSQL.append("VALUES (?)");
+    public final void crear(final paisEntity entidad) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("INSERT INTO Pais(Nombre) ");
+        sentenciaSql.append("VALUES(?)");
 
-        try(final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSQL.toString())) {
+        try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
             sentenciaPreparada.setString(1, entidad.getNombre());
             sentenciaPreparada.executeUpdate();
         } catch (final SQLException exception) {
-            var menajeUsuaario = "No ha sido posible llevar a cabo el registro de la informacion del nuevo Pais, intente de  nuevo y en caso de persistir el problema comuniquese con el administrador de la aplicacion de la tienda chepito";//Este no va en base, va en externo
-            var menajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000023,entidad.getNombre());//Este no va en base, va en externo
-            throw new DataTiendaChepitoException(menajeTecnico, menajeUsuaario, exception);
-        }catch (Exception exception) {
-            var menajeUsuaario = "No ha sido posible llevar a cabo el registro de la informacion del nuevo Pais, intente de  nuevo y en caso de persistir el problema comuniquese con el administrador de la aplicacion de la tienda chepito";//Este no va en base, va en externo
-            var menajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000024,entidad.getNombre());//Este no va en base, va en externo
-            throw new DataTiendaChepitoException(menajeTecnico, menajeUsuaario, exception);
+            var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información del nuevo país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000023, entidad.getNombre());
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        } catch (final Exception exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo el registro de la información del nuevo país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000024, entidad.getNombre());
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
         }
-        
     }
 
     @Override
-    public void eliminar(final int id) {
-        //Eliminar pais con codigo 1
-        final var sentencia = new StringBuilder();
-        sentencia.append("DELETE FROM PAIS WHERE ID = 1");
+    public final void eliminar(final int id) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("DELETE FROM Pais ");
+        sentenciaSql.append("WHERE Id = ?");
 
+        try (final PreparedStatement sentenciaPreparada = getConnection().prepareStatement(sentenciaSql.toString())) {
+            sentenciaPreparada.setInt(1, id);
+            sentenciaPreparada.executeUpdate();
+        } catch (final SQLException exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la eliminación del país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000023, String.valueOf(id));
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        } catch (final Exception exception) {
+            var mensajeUsuario = "No ha sido posible llevar a cabo la eliminación del país. Por favor intente de nuevo y en caso de persistir el problema comuníquese con el administrador de la app tiendaChepito";
+            var mensajeTecnico = MessageCatalogStrategy.getContenidoMensaje(CodigoMensaje.M000024, String.valueOf(id));
+            throw new DataTiendaChepitoException(mensajeTecnico, mensajeUsuario, exception);
+        }
     }
 }

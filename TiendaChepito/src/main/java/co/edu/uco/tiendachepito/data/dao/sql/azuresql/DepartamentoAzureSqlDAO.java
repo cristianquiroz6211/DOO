@@ -1,34 +1,46 @@
-package co.edu.uco.tiendachepito.data.dao.sql.azuresql;
+package co.edu.uco.tiendachepito.data.DAO.sql.azuresql;
 
-import co.edu.uco.tiendachepito.data.dao.DepartamentoDAO;
-import co.edu.uco.tiendachepito.data.dao.sql.SqlConnection;
-import co.edu.uco.tiendachepito.entity.PaisEntity;
+import co.edu.uco.tiendachepito.data.DAO.DepartamentoDAO;
+import co.edu.uco.tiendachepito.data.DAO.sql.SqlConnection;
+import co.edu.uco.tiendachepito.entity.departamentoEntity;
 
 import java.sql.Connection;
 import java.util.List;
 
 public final class DepartamentoAzureSqlDAO extends SqlConnection implements DepartamentoDAO {
-    public DepartamentoAzureSqlDAO(final Connection connection) {
+
+    public DepartamentoAzureSqlDAO(final Connection connection){
         super(connection);
-
-    }
-    @Override
-    public void actualizar(final PaisEntity entidad) {
-
     }
 
     @Override
-    public List<PaisEntity> consultar(final PaisEntity entidad) {
-        return List.of();
+    public final void actualizar(final departamentoEntity entidad) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("UPDATE Departamento");
+        sentenciaSql.append("SET Nombre = 'Atlantico' ");
+        sentenciaSql.append("WHERE Id = '1'");
     }
 
     @Override
-    public void crear(final PaisEntity entidad) {
-
+    public final List<departamentoEntity> consultar(final departamentoEntity entidad) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("SELECT  Id, Nombre");
+        sentenciaSql.append("FROM Departamento");
+        sentenciaSql.append("ORDER BY Nombre ASC");
+        return null;
     }
 
     @Override
-    public void eliminar(final int id) {
+    public final void crear(final departamentoEntity entidad) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("INSERT INTO Departamento(Nombre)");
+        sentenciaSql.append("VALUES('Antioquia')");
+    }
 
+    @Override
+    public final void eliminar(final int id) {
+        final var sentenciaSql = new StringBuilder();
+        sentenciaSql.append("DELETE FROM Departamento");
+        sentenciaSql.append("WHERE Id = '1'");
     }
 }

@@ -1,67 +1,62 @@
 package co.edu.uco.tiendachepito.entity;
 
-import co.edu.uco.tiendachepito.crosscutting.helpers.ObjectHelper;
-import co.edu.uco.tiendachepito.crosscutting.helpers.TextHelper;
 
-import static co.edu.uco.tiendachepito.crosscutting.helpers.NumericHelper.ZERO;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.helpers.NumericHelper;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.helpers.ObjectHelper;
+import co.edu.uco.tiendachepito.crosscutting.crosscutting.helpers.TextHelper;
 
-public final  class DepartamentoEntity {
+public final class departamentoEntity {
 
     private int id;
-    private String  nombre;
-    private PaisEntity  pais;
+    private String nombre;
+    private paisEntity pais;
 
-    public DepartamentoEntity(int id) {
+    private departamentoEntity (final int id){
         setId(id);
         setNombre(TextHelper.EMPTY);
-        setPais(PaisEntity.build());
+        setPais(paisEntity.build());
     }
 
-    public DepartamentoEntity(final int id,final String nombre, final PaisEntity pais) {
+    public departamentoEntity(final int id, final String nombre, final paisEntity pais) {
         setId(id);
         setNombre(nombre);
         setPais(pais);
-
-    }
-    public static final DepartamentoEntity build(final int id) {
-        return new DepartamentoEntity(id);
-
-    }
-    protected static final DepartamentoEntity build() {
-        return new DepartamentoEntity(ZERO);
-
-    }
-    public static final DepartamentoEntity build(final int id, final String nombre, final PaisEntity pais) {
-        return new DepartamentoEntity(id, nombre, pais);
-
     }
 
-
-    private final DepartamentoEntity setId(final int id) {
-        this.id = id;
-        return this;
+    public static final departamentoEntity build(final int id){
+        return new departamentoEntity(id);
     }
 
-    private final DepartamentoEntity setNombre(final String nombre) {
-        this.nombre = TextHelper.applyTrim(nombre);
-        return this;
+    public static final departamentoEntity build(final int id, final String nombre, final departamentoEntity departamentoEntity){
+        return new departamentoEntity(id);
     }
 
-    private final DepartamentoEntity setPais(final PaisEntity pais) {
-        this.pais = ObjectHelper.getObjectHelper().getDefault(pais, PaisEntity.build());
-        return this;
+    protected static final departamentoEntity build(){
+        return new departamentoEntity(NumericHelper.ZERO);
     }
 
-
-    public int getId() {
+    public final int getId() {
         return id;
     }
 
-    public String getNombre() {
+    public final String getNombre() {
         return nombre;
     }
 
-    public PaisEntity getPais() {
+    public final paisEntity getPais() {
+        return pais;
+    }
+
+    private final void setId(final int id) {
+        this.id = id;
+    }
+
+    private final void setNombre(final String nombre) {
+        this.nombre = TextHelper.applyTrim(nombre);
+    }
+
+    private final paisEntity setPais(final paisEntity pais) {
+        this.pais = ObjectHelper.getObjectHelper().getDefault(pais, paisEntity.build(NumericHelper.ZERO));
         return pais;
     }
 }
